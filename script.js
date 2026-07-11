@@ -23,12 +23,31 @@ checkbox.addEventListener("change", () => {
     button.disabled = !checkbox.checked;
 });
 
-button.addEventListener("click", () => {
-    // Force download
+button.addEventListener("click", async () => {
+
+    const customerEmail = prompt(
+        "Por favor confirme o seu email:"
+    );
+
+    await fetch(
+        "https://mute-haze-9698.YOUR_WORKER.workers.dev",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                photoId: photoId,
+                customerEmail: customerEmail
+            })
+        }
+    );
+
     const link = document.createElement("a");
     link.href = imageUrl;
     link.download = "";
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
 });
