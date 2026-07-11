@@ -29,7 +29,8 @@ button.addEventListener("click", async () => {
         "Por favor confirme o seu email:"
     );
 
-    await fetch(
+    // Send notification (does not block download)
+    fetch(
         "https://mute-haze-9698.luis-santos-286.workers.dev",
         {
             method: "POST",
@@ -38,11 +39,14 @@ button.addEventListener("click", async () => {
             },
             body: JSON.stringify({
                 photoId: photoId,
-                customerEmail: customerEmail
+                customerEmail: customerEmail || "Não fornecido"
             })
         }
-    );
+    ).catch(error => {
+        console.log("Notification error:", error);
+    });
 
+    // Start download immediately
     const link = document.createElement("a");
     link.href = imageUrl;
     link.download = "";
