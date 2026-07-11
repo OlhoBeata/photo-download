@@ -30,7 +30,7 @@ button.addEventListener("click", async () => {
     );
 
     await fetch(
-        "https://mute-haze-9698.YOUR_WORKER.workers.dev",
+        "https://mute-haze-9698.luis-santos-286.workers.dev",
         {
             method: "POST",
             headers: {
