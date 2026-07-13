@@ -25,9 +25,33 @@ checkbox.addEventListener("change", () => {
 
 button.addEventListener("click", async () => {
 
-    const customerEmail = prompt(
-        "Por favor confirme o seu email:"
-    );
+    let customerEmail = "";
+
+while (true) {
+
+    customerEmail = prompt("Por favor confirme o seu email:");
+
+    if (customerEmail === null) {
+        alert("É necessário fornecer um email para descarregar a fotografia.");
+        return;
+    }
+
+    customerEmail = customerEmail.trim();
+
+    if (customerEmail === "") {
+        alert("Por favor introduza o seu email.");
+        continue;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(customerEmail)) {
+        alert("Por favor introduza um email válido.");
+        continue;
+    }
+
+    break;
+}
 
     // Send notification (does not block download)
     fetch(
