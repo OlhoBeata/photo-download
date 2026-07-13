@@ -63,8 +63,7 @@ while (true) {
             },
             body: JSON.stringify({
                 photoId: photoId,
-                customerEmail: customerEmail || "Não fornecido"
-            })
+                customerEmail: customerEmail
         }
     ).catch(error => {
         console.log("Notification error:", error);
