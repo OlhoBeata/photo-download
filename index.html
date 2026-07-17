@@ -1,44 +1,249 @@
-<h2>A sua fotografia está pronta!</h2>
+<!DOCTYPE html>
+<html lang="pt-PT">
 
-<div class="consent-box">
+<head>
 
-    <h3>Vamos estar juntos no ecossistema empreendedor?</h3>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <p>
-        Se desejar, pode autorizar o IAPMEI a utilizar a sua imagem e/ou enviar-lhe
-        comunicações relacionadas com o programa StartUP Voucher Innovate.
-    </p>
+<title>Descarregar Fotografia | StartUP Voucher Innovate</title>
 
-    <div class="option">
-        <label>
-            <input type="checkbox" id="imageConsent">
-            <strong>Autorização de imagem e voz</strong><br>
-            Autorizo a captação e utilização da minha imagem e/ou voz pelo IAPMEI para efeitos de divulgação institucional do programa StartUP Voucher Innovate.
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ==========================
+         CABEÇALHO
+    =========================== -->
+
+    <header class="header">
+
+        <div class="logos">
+
+            <img src="assets/logo-iapmei.png"
+                 alt="IAPMEI"
+                 class="logo">
+
+            <img src="assets/logo-startup.png"
+                 alt="StartUP Voucher Innovate"
+                 class="logo">
+
+        </div>
+
+        <h1>
+
+            Obrigado por participar!
+
+        </h1>
+
+        <p class="subtitle">
+
+            A sua fotografia do
+            <strong>StartUP Voucher Innovate</strong>
+            está pronta para ser descarregada.
+
+        </p>
+
+    </header>
+
+    <!-- ==========================
+         FOTOGRAFIA
+    =========================== -->
+
+    <section class="photo-section">
+
+        <div id="loading">
+
+            <div class="spinner"></div>
+
+            <p>
+
+                A preparar a sua fotografia...
+
+            </p>
+
+        </div>
+
+        <img
+            id="photo"
+            alt="Fotografia do evento">
+
+    </section>
+
+    <!-- ==========================
+         EMAIL
+    =========================== -->
+
+    <section class="email-section">
+
+        <label for="customerEmail">
+
+            Endereço de email
+
         </label>
-    </div>
 
-    <div class="option">
-        <label>
-            <input type="checkbox" id="emailConsent">
-            <strong>Comunicações por email</strong><br>
-            Autorizo o IAPMEI a utilizar o meu endereço de email para me enviar comunicações relacionadas com a sua atividade, incluindo o programa StartUP Voucher Innovate.
+        <input
+            type="email"
+            id="customerEmail"
+            placeholder="nome@empresa.pt"
+            autocomplete="email">
+
+        <small id="emailError"></small>
+
+    </section>
+
+    <!-- ==========================
+         RGPD
+    =========================== -->
+
+    <section class="rgpd-card">
+
+        <h2>
+
+            Vamos estar juntos no ecossistema empreendedor?
+
+        </h2>
+
+        <div class="rgpd-text">
+
+            <p>
+
+                Se desejar, pode autorizar o IAPMEI a utilizar
+                a sua imagem e/ou enviar-lhe comunicações
+                relacionadas com o programa
+                <strong>StartUP Voucher Innovate</strong>.
+
+            </p>
+
+            <p>
+
+                Pode retirar o seu consentimento em qualquer
+                momento através do endereço
+
+                <a href="mailto:info@iapmei.pt">
+
+                    info@iapmei.pt
+
+                </a>
+
+            </p>
+
+            <p>
+
+                Para informação detalhada consulte a Política
+                de Privacidade e Segurança de Dados Pessoais
+                do IAPMEI.
+
+            </p>
+
+        </div>
+
+    </section>
+
+       <!-- ==========================
+         CONSENTIMENTOS
+    =========================== -->
+
+    <section class="consent-section">
+
+        <h2>Autorizações opcionais</h2>
+
+        <label class="option">
+
+            <input
+                type="checkbox"
+                id="imageConsent">
+
+            <div>
+
+                <strong>Autorização de imagem e voz</strong>
+
+                <p>
+
+                    Autorizo a captação e utilização da minha
+                    imagem e/ou voz pelo IAPMEI para efeitos
+                    de divulgação institucional do programa
+                    StartUP Voucher Innovate.
+
+                </p>
+
+            </div>
+
         </label>
-    </div>
 
-    <p class="small">
-        Pode retirar o seu consentimento a qualquer momento através do email
-        <a href="mailto:info@iapmei.pt">info@iapmei.pt</a>.
-    </p>
+        <label class="option">
 
-    <p class="small">
-        Consulte a
-        <a href="https://olhodabeata.com/privacy-policy" target="_blank">
-            Política de Privacidade e Segurança de Dados Pessoais
-        </a>.
-    </p>
+            <input
+                type="checkbox"
+                id="emailConsent">
+
+            <div>
+
+                <strong>Comunicações por email</strong>
+
+                <p>
+
+                    Autorizo o IAPMEI a utilizar o meu endereço
+                    de email para me enviar comunicações
+                    relacionadas com a sua atividade,
+                    incluindo o programa
+                    StartUP Voucher Innovate.
+
+                </p>
+
+            </div>
+
+        </label>
+
+    </section>
+
+    <!-- ==========================
+         DOWNLOAD
+    =========================== -->
+
+    <section class="download-section">
+
+        <button id="download">
+
+            📥 Descarregar fotografia
+
+        </button>
+
+        <p id="statusMessage"></p>
+
+    </section>
+
+    <!-- ==========================
+         RODAPÉ
+    =========================== -->
+
+    <footer>
+
+        <hr>
+
+        <p>
+
+            Obrigado pela sua participação.
+
+        </p>
+
+        <p>
+
+            Plataforma de entrega de fotografias desenvolvida por
+            <strong>Olho da Beata</strong>
+
+        </p>
+
+    </footer>
 
 </div>
 
-<button id="download">
-    Descarregar Fotografia
-</button>
+<script src="script.js"></script>
+
+</body>
+
+</html>
