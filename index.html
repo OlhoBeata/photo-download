@@ -1,61 +1,33 @@
-<!DOCTYPE html>
-<html lang="pt-PT">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download da Fotografia</title>
+<h2>A sua fotografia está pronta!</h2>
 
-    <link rel="stylesheet" href="style.css">
-</head>
+<div class="consent-text">
 
-<body>
-
-<div class="container">
-
-    <img id="photo" alt="Fotografia">
-
-    <h2>A sua fotografia está pronta!</h2>
-
-    <div class="consent-text">
-
-        <p>
-            Autorizo o IAPMEI – Agência para a Competitividade e Inovação, I.P., no âmbito do Programa StartUP Voucher Innovate, a captar e utilizar fotografias e/ou vídeos onde eu possa surgir, para fins de comunicação, divulgação e promoção das atividades do programa.
-        </p>
-
-        <p>
-            Esta autorização inclui a utilização dos conteúdos nos canais de comunicação do IAPMEI, nomeadamente websites, redes sociais, publicações e outros materiais de divulgação relacionados com o Programa.
-        </p>
-
-        <p>
-            A autorização é concedida de forma livre e gratuita, podendo ser retirada a qualquer momento mediante comunicação para
-            <a href="mailto:info@iapmei.pt">info@iapmei.pt</a>.
-        </p>
-
-        <p>
-            Para mais informações, consulte também a nossa
-            <a href="https://olhodabeata.com/privacy-policy" target="_blank">
-                Política de Privacidade
-            </a>
-            e os
-            <a href="https://olhodabeata.com/terms-and-conditions" target="_blank">
-                Termos e Condições
-            </a>.
-        </p>
-
-    </div>
+    <p><strong>Vamos estar juntos no ecossistema empreendedor?</strong></p>
 
     <label class="checkbox">
-        <input type="checkbox" id="agree">
-        Declaro que li e aceito os termos acima.
+        <input type="checkbox" id="imageConsent">
+        Autorização de imagem e voz: Autorizo a captação e utilização da minha imagem e/ou voz pelo IAPMEI para efeitos de divulgação institucional do programa StartUP Voucher Innovate.
     </label>
 
-    <button id="download" disabled>
-        Descarregar Fotografia
-    </button>
+    <label class="checkbox">
+        <input type="checkbox" id="emailConsent">
+        Comunicações por email: Autorizo o IAPMEI a utilizar o meu endereço de email para me enviar comunicações relacionadas com a sua atividade, incluindo o programa StartUP Voucher Innovate.
+    </label>
+
+    <p>
+        Pode retirar o seu consentimento a qualquer momento através do email
+        <a href="mailto:info@iapmei.pt">info@iapmei.pt</a>.
+    </p>
+
+    <p>
+        Para informação detalhada, consulte a
+        <a href="https://olhodabeata.com/privacy-policy" target="_blank">
+            Política de Privacidade e Segurança de Dados Pessoais do IAPMEI, I.P.
+        </a>.
+    </p>
 
 </div>
 
-<script src="script.js"></script>
-
-</body>
-</html>
+<button id="download">
+    Descarregar Fotografia
+</button>
