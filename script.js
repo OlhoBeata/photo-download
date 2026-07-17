@@ -94,3 +94,12 @@ button.addEventListener("click", async () => {
         button.textContent = "Descarregar fotografia";
     }
 });
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+<script>
+    emailjs.init({
+        publicKey: "A_TUA_PUBLIC_KEY"
+    });
+</script>
+
+<script src="script.js"></script>
