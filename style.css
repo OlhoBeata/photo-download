@@ -339,3 +339,40 @@ input {
         min-height: 62px;
     }
 }
+html,
+body {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+}
+
+.page,
+.container,
+.form-section,
+.information-section,
+.consent-section,
+.required-consent,
+.download-section,
+.footer {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+}
+
+.consent-option {
+    background-color: #ffffff !important;
+    color: #1a1a1a !important;
+}
+
+.consent-option strong {
+    color: #1a1a1a !important;
+}
+
+.consent-option small {
+    color: #606060 !important;
+}
+
+.consent-option input[type="checkbox"] {
+    appearance: auto;
+    width: 24px;
+    height: 24px;
+    accent-color: #111111;
+}
