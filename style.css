@@ -74,50 +74,93 @@ input {
 
 /* FOTOGRAFIA */
 
+/* FOTOGRAFIA */
+
 .photo-section {
     position: relative;
     margin-bottom: 42px;
 }
 
-.photo {
-  display: none;
-  width: 100%;
-  max-width: 180px;
-  height: auto;
-  margin: 0 auto;
-  border: 1px solid #dddddd;
-  border-radius: 6px;
-}
-
-.photo.visible {
-  display: block;
-}
-
 .preview-label {
-  margin: 0 0 12px;
-  text-align: center;
-  color: #777777;
-  font-size: 13px;
+    margin: 0 0 12px;
+    text-align: center;
+    color: #555555;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
 }
 
-.photo.visible {
-  display: block;
+.preview-wrapper {
+    position: relative;
+    display: none;
+    width: 150px;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid #d7d7d7;
+    border-radius: 6px;
+    background: #eeeeee;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
 }
 
-.preview-label {
-  margin: 0 0 12px;
-  text-align: center;
-  color: #777777;
-  font-size: 13px;
-}
-}
-
-.photo.visible {
+.preview-wrapper.visible {
     display: block;
 }
 
+.photo {
+    display: block;
+    width: 150px;
+    max-width: 150px;
+    height: auto;
+    margin: 0;
+    filter: blur(4px);
+    transform: scale(1.08);
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.preview-watermark {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    background:
+        repeating-linear-gradient(
+            -35deg,
+            rgba(255, 255, 255, 0.04) 0,
+            rgba(255, 255, 255, 0.04) 15px,
+            rgba(0, 0, 0, 0.05) 15px,
+            rgba(0, 0, 0, 0.05) 30px
+        );
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 12px;
+    line-height: 1.3;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-align: center;
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.9),
+        0 0 8px rgba(0, 0, 0, 0.7);
+    transform: rotate(-18deg);
+}
+
+.preview-notice {
+    max-width: 380px;
+    margin: 12px auto 0;
+    text-align: center;
+    color: #777777;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
 .loading {
-    min-height: 300px;
+    min-height: 220px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -146,8 +189,6 @@ input {
         transform: rotate(360deg);
     }
 }
-
-
 /* FORMULÁRIO */
 
 .form-section {
