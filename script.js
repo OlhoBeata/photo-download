@@ -7,17 +7,10 @@
 const CONFIG = {
     cloudName: "lim5fdgq",
 
-    /*
-     * Coloca aqui o Instagram que deve abrir
-     * depois do download.
-     */
-    instagramUrl: "https://www.instagram.com/olhodabeata/",
+    instagramUrl: "https://www.instagram.com/by.iapmei/",
 
-    /*
-     * Mais tarde colocaremos aqui o Worker da base de dados.
-     * Por agora fica vazio para não impedir o download.
-     */
-    workerUrl: ""
+    workerUrl:
+        "https://weathered-bonus-4ffaolhodabeata-api-v3.luis-santos-286.workers.dev/downloads"
 };
 
 
@@ -31,6 +24,7 @@ const photoId = params.get("photo");
 const container = document.querySelector(".container");
 const photo = document.getElementById("photo");
 const loading = document.getElementById("loading");
+const previewWrapper = document.getElementById("previewWrapper");
 
 const emailInput = document.getElementById("customerEmail");
 const emailError = document.getElementById("emailError");
@@ -63,7 +57,7 @@ if (!photoId) {
 
 
 /* =========================================================
-   URLS CLOUDINARY
+   ENDEREÇOS CLOUDINARY
    ========================================================= */
 
 const encodedPhotoId = photoId
@@ -72,35 +66,24 @@ const encodedPhotoId = photoId
     .join("/");
 
 /*
- * Pré-visualização pequena e de qualidade reduzida.
- * O original continua a ser utilizado apenas no download.
- */
-/*
- * Imagem apenas para pré-visualização:
- * pequena, baixa qualidade e fortemente desfocada.
+ * Pré-visualização protegida:
+ * 150 px, baixa qualidade e desfocada.
  */
 const imageUrl =
-    `https://res.cloudinary.com/${CONFIG.cloudinary.cloudName}` +
-    `/image/upload/c_limit,w_150,q_15,e_blur:700,f_auto/${encodedPhotoId}`;
+    `https://res.cloudinary.com/${CONFIG.cloudName}` +
+    `/image/upload/c_limit,w_150,q_15,e_blur:800,f_auto/${encodedPhotoId}`;
 
+/*
+ * A fotografia original é utilizada apenas no download.
+ */
 const downloadUrl =
-  `https://res.cloudinary.com/${CONFIG.cloudinary.cloudName}` +
-  `/image/upload/fl_attachment/${encodedPhotoId}`;
+    `https://res.cloudinary.com/${CONFIG.cloudName}` +
+    `/image/upload/fl_attachment/${encodedPhotoId}`;
 
 
 /* =========================================================
-   CARREGAR FOTOGRAFIA
+   CARREGAR PRÉ-VISUALIZAÇÃO
    ========================================================= */
-
-const previewWrapper =
-    document.getElementById("previewWrapper");
-
-photo.addEventListener("load", () => {
-    loading.style.display = "none";
-    previewWrapper.classList.add("visible");
-});
-
-const previewWrapper = document.getElementById("previewWrapper");
 
 photo.addEventListener("load", () => {
     loading.style.display = "none";
@@ -111,7 +94,6 @@ photo.addEventListener("error", () => {
     loading.innerHTML = `
         <p>Não foi possível carregar a pré-visualização.</p>
     `;
-});
 
     downloadButton.disabled = true;
 });
@@ -146,16 +128,17 @@ agree.addEventListener("change", () => {
 
 
 /* =========================================================
-   REGISTO FUTURO NA BASE DE DADOS
+   REGISTAR DOWNLOAD
    ========================================================= */
 
 async function registarDownload(email) {
     if (!CONFIG.workerUrl) {
-        return;
+        return null;
     }
 
     const payload = {
-        event: "StartUP Voucher Innovate",
+        eventCode: "STARTUP-VOUCHER-INNOVATE",
+        eventName: "StartUP Voucher Innovate",
         email: email,
         photoId: photoId,
         imageConsent: imageConsent.checked,
@@ -166,22 +149,30 @@ async function registarDownload(email) {
     };
 
     try {
-        await fetch(CONFIG.workerUrl, {
+        const response = await fetch(CONFIG.workerUrl, {
             method: "POST",
+
             headers: {
                 "Content-Type": "application/json"
             },
+
             body: JSON.stringify(payload)
         });
+
+        if (!response.ok) {
+            throw new Error(
+                `O Worker respondeu com o código ${response.status}`
+            );
+        }
+
+        return await response.json();
     } catch (error) {
-        /*
-         * Um erro no registo nunca deve impedir
-         * o cliente de descarregar a fotografia.
-         */
         console.error(
             "Não foi possível registar o download:",
             error
         );
+
+        return null;
     }
 }
 
@@ -205,9 +196,8 @@ async function descarregarComBlob() {
     const link = document.createElement("a");
 
     link.href = temporaryUrl;
-    link.download = `fotografia-${photoId
-        .split("/")
-        .pop()}.jpg`;
+    link.download =
+        `fotografia-${photoId.split("/").pop()}.jpg`;
 
     document.body.appendChild(link);
     link.click();
@@ -270,57 +260,42 @@ downloadButton.addEventListener("click", async () => {
     }
 
     downloadButton.disabled = true;
-    downloadButton.textContent = "A preparar o download...";
-
-    let downloadIniciado = false;
+    downloadButton.textContent =
+        "A preparar o download...";
 
     try {
-        /*
-         * Tentativa principal.
-         */
         await descarregarComBlob();
-        downloadIniciado = true;
     } catch (error) {
         console.warn(
             "Download por Blob indisponível. A utilizar ligação direta.",
             error
         );
 
-        /*
-         * Solução alternativa.
-         */
         descarregarDiretamente();
-        downloadIniciado = true;
     }
 
-    if (downloadIniciado) {
-        statusMessage.textContent =
-            "Download iniciado com sucesso.";
+    statusMessage.textContent =
+        "Download iniciado com sucesso.";
 
-        /*
-         * Guardar apenas quem carregou efetivamente
-         * no botão de download.
-         */
-        registarDownload(email);
+    const resultado = await registarDownload(email);
+    const downloadId = resultado?.downloadId || "";
 
-        /*
-         * Esperar um pouco antes de mostrar
-         * a página de Instagram.
-         */
-        setTimeout(() => {
-            const successUrl =
-                `success.html?instagram=${encodeURIComponent(
-                    CONFIG.instagramUrl
-                )}`;
+    setTimeout(() => {
+        const parametros = new URLSearchParams();
 
-            window.location.href = successUrl;
-        }, 1800);
-    } else {
-        statusMessage.textContent =
-            "Não foi possível iniciar o download.";
+        parametros.set(
+            "instagram",
+            CONFIG.instagramUrl
+        );
 
-        downloadButton.disabled = false;
-        downloadButton.textContent =
-            "Descarregar fotografia";
-    }
+        if (downloadId) {
+            parametros.set(
+                "downloadId",
+                downloadId
+            );
+        }
+
+        window.location.href =
+            `success.html?${parametros.toString()}`;
+    }, 1400);
 });
