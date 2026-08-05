@@ -80,13 +80,13 @@ input {
 }
 
 .photo {
-  display: none;
-  width: 100%;
-  max-width: 320px;
-  height: auto;
-  margin: 0 auto;
-  border-radius: 6px;
-  border: 1px solid #e2e2e2;
+    display: none;
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    margin: 0 auto;
+    border-radius: 6px;
+    border: 1px solid #e2e2e2;
 }
 
 .photo.visible {
