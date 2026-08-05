@@ -92,9 +92,12 @@ const downloadUrl =
    CARREGAR FOTOGRAFIA
    ========================================================= */
 
+const previewWrapper =
+  document.getElementById("previewWrapper");
+
 photo.addEventListener("load", () => {
-    loading.style.display = "none";
-    photo.classList.add("visible");
+  loading.style.display = "none";
+  previewWrapper.classList.add("visible");
 });
 
 photo.addEventListener("error", () => {
