@@ -76,7 +76,7 @@ const encodedPhotoId = photoId
  * O original continua a ser utilizado apenas no download.
  */
 const imageUrl =
-  `https://res.cloudinary.com/${CONFIG.cloudinary.cloudName}/image/upload/c_limit,w_320,q_45,f_auto/${encodedPhotoId}`;
+  `https://res.cloudinary.com/${CONFIG.cloudinary.cloudName}/image/upload/c_limit,w_180,q_35,f_auto/${encodedPhotoId}`;
 
 const downloadUrl =
     `https://res.cloudinary.com/${CONFIG.cloudName}/image/upload/fl_attachment/${encodedPhotoId}`;
