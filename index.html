@@ -47,27 +47,39 @@
 
             <section class="photo-section">
 
-                <div id="loading" class="loading">
+  <p class="preview-label">
+    Pré-visualização protegida
+  </p>
 
-                    <div class="spinner"></div>
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
 
-                    <p>
-                        A preparar a sua fotografia...
-                    </p>
+    <p>
+      A preparar a pré-visualização...
+    </p>
+  </div>
 
-                </div>
+  <div id="previewWrapper" class="preview-wrapper">
 
-                <p class="preview-label">
-  Pré-visualização em baixa resolução
-</p>
+    <img
+      id="photo"
+      class="photo"
+      alt="Pré-visualização protegida da fotografia"
+      draggable="false"
+    >
 
-<img
-  id="photo"
-  class="photo"
-  alt="Pré-visualização da fotografia"
->
+    <div class="preview-watermark">
+      PRÉ-VISUALIZAÇÃO
+    </div>
 
-            </section>
+  </div>
+
+  <p class="preview-notice">
+    A fotografia original será disponibilizada apenas através do botão
+    de download.
+  </p>
+
+</section>
 
 
             <!-- EMAIL -->
