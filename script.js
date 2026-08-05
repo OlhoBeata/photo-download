@@ -75,8 +75,13 @@ const encodedPhotoId = photoId
  * Pré-visualização pequena e de qualidade reduzida.
  * O original continua a ser utilizado apenas no download.
  */
+/*
+ * Imagem apenas para pré-visualização:
+ * pequena, baixa qualidade e fortemente desfocada.
+ */
 const imageUrl =
-`https://res.cloudinary.com/${CONFIG.cloudinary.cloudName}/image/upload/w_150,q_10,e_blur:1000,f_auto/${encodedPhotoId}`;
+  `https://res.cloudinary.com/${CONFIG.cloudinary.cloudName}` +
+  `/image/upload/c_limit,w_150,q_15,e_blur:700,f_auto/${encodedPhotoId}`;
 
 const downloadUrl =
   `https://res.cloudinary.com/${CONFIG.cloudinary.cloudName}` +
