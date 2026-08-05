@@ -80,7 +80,8 @@ const imageUrl =
   `/image/upload/c_limit,w_180,q_30,e_blur:180,f_auto/${encodedPhotoId}`;
 
 const downloadUrl =
-    `https://res.cloudinary.com/${CONFIG.cloudName}/image/upload/fl_attachment/${encodedPhotoId}`;
+  `https://res.cloudinary.com/${CONFIG.cloudinary.cloudName}` +
+  `/image/upload/fl_attachment/${encodedPhotoId}`;
 
 
 /* =========================================================
