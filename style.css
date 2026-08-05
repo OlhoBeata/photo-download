@@ -80,13 +80,25 @@ input {
 }
 
 .photo {
-    display: none;
-    width: 100%;
-    max-width: 180px;
-    height: auto;
-    margin: 0 auto;
-    border-radius: 6px;
-    border: 1px solid #e2e2e2;
+  display: none;
+  width: 100%;
+  max-width: 180px;
+  height: auto;
+  margin: 0 auto;
+  border: 1px solid #dddddd;
+  border-radius: 6px;
+}
+
+.photo.visible {
+  display: block;
+}
+
+.preview-label {
+  margin: 0 0 12px;
+  text-align: center;
+  color: #777777;
+  font-size: 13px;
+}
 }
 
 .photo.visible {
