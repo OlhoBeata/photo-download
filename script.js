@@ -100,13 +100,18 @@ photo.addEventListener("load", () => {
     previewWrapper.classList.add("visible");
 });
 
+const previewWrapper = document.getElementById("previewWrapper");
+
+photo.addEventListener("load", () => {
+    loading.style.display = "none";
+    previewWrapper.classList.add("visible");
+});
+
 photo.addEventListener("error", () => {
     loading.innerHTML = `
-        <p>
-            Não foi possível carregar a fotografia.
-            Confirme se o link está correto.
-        </p>
+        <p>Não foi possível carregar a pré-visualização.</p>
     `;
+});
 
     downloadButton.disabled = true;
 });
