@@ -99,6 +99,17 @@ input {
   color: #777777;
   font-size: 13px;
 }
+
+.photo.visible {
+  display: block;
+}
+
+.preview-label {
+  margin: 0 0 12px;
+  text-align: center;
+  color: #777777;
+  font-size: 13px;
+}
 }
 
 .photo.visible {
