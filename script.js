@@ -80,8 +80,8 @@ const encodedPhotoId = photoId
  * pequena, baixa qualidade e fortemente desfocada.
  */
 const imageUrl =
-  `https://res.cloudinary.com/${CONFIG.cloudinary.cloudName}` +
-  `/image/upload/c_limit,w_150,q_15,e_blur:700,f_auto/${encodedPhotoId}`;
+    `https://res.cloudinary.com/${CONFIG.cloudinary.cloudName}` +
+    `/image/upload/c_limit,w_150,q_15,e_blur:700,f_auto/${encodedPhotoId}`;
 
 const downloadUrl =
   `https://res.cloudinary.com/${CONFIG.cloudinary.cloudName}` +
@@ -93,11 +93,11 @@ const downloadUrl =
    ========================================================= */
 
 const previewWrapper =
-  document.getElementById("previewWrapper");
+    document.getElementById("previewWrapper");
 
 photo.addEventListener("load", () => {
-  loading.style.display = "none";
-  previewWrapper.classList.add("visible");
+    loading.style.display = "none";
+    previewWrapper.classList.add("visible");
 });
 
 photo.addEventListener("error", () => {
