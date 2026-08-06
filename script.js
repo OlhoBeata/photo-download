@@ -7,7 +7,11 @@
 const CONFIG = {
     cloudName: "lim5fdgq",
 
-    instagramUrl: "https://www.instagram.com/by.iapmei/",
+    eventCode: "STARTUP-VOUCHER-INNOVATE",
+    eventName: "StartUP Voucher Innovate",
+
+    instagramUrl:
+        "https://www.instagram.com/by.iapmei/",
 
     workerUrl:
         "https://weathered-bonus-4ffaolhodabeata-api-v3.luis-santos-286.workers.dev/downloads"
@@ -18,23 +22,65 @@ const CONFIG = {
    ELEMENTOS
    ========================================================= */
 
-const params = new URLSearchParams(window.location.search);
-const photoId = params.get("photo");
+const params =
+    new URLSearchParams(window.location.search);
 
-const container = document.querySelector(".container");
-const photo = document.getElementById("photo");
-const loading = document.getElementById("loading");
-const previewWrapper = document.getElementById("previewWrapper");
+const photoId =
+    params.get("photo");
 
-const emailInput = document.getElementById("customerEmail");
-const emailError = document.getElementById("emailError");
+const container =
+    document.querySelector(".container");
 
-const imageConsent = document.getElementById("imageConsent");
-const emailConsent = document.getElementById("emailConsent");
-const agree = document.getElementById("agree");
+const photo =
+    document.getElementById("photo");
 
-const downloadButton = document.getElementById("download");
-const statusMessage = document.getElementById("statusMessage");
+const loading =
+    document.getElementById("loading");
+
+const previewWrapper =
+    document.getElementById("previewWrapper");
+
+const emailInput =
+    document.getElementById("customerEmail");
+
+const emailError =
+    document.getElementById("emailError");
+
+const imageConsent =
+    document.getElementById("imageConsent");
+
+const emailConsent =
+    document.getElementById("emailConsent");
+
+const agree =
+    document.getElementById("agree");
+
+const downloadButton =
+    document.getElementById("download");
+
+const statusMessage =
+    document.getElementById("statusMessage");
+
+let downloadEmCurso = false;
+
+
+/* =========================================================
+   VALIDAR ELEMENTOS ESSENCIAIS
+   ========================================================= */
+
+if (
+    !container ||
+    !photo ||
+    !emailInput ||
+    !emailError ||
+    !agree ||
+    !downloadButton ||
+    !statusMessage
+) {
+    throw new Error(
+        "A página de download não contém todos os elementos necessários."
+    );
+}
 
 
 /* =========================================================
@@ -52,7 +98,9 @@ if (!photoId) {
         </header>
     `;
 
-    throw new Error("Falta o parâmetro photo no endereço.");
+    throw new Error(
+        "Falta o parâmetro photo no endereço."
+    );
 }
 
 
@@ -66,12 +114,13 @@ const encodedPhotoId = photoId
     .join("/");
 
 /*
- * Pré-visualização protegida:
- * 150 px, baixa qualidade e desfocada.
+ * Pré-visualização pequena e com qualidade reduzida.
+ * A marca de água é aplicada visualmente pelo HTML/CSS.
  */
 const imageUrl =
     `https://res.cloudinary.com/${CONFIG.cloudName}` +
-    `/image/upload/c_fill,w_220,q_40,f_auto/${encodedPhotoId}`;
+    `/image/upload/c_limit,w_220,q_45,f_auto/${encodedPhotoId}`;
+
 /*
  * A fotografia original é utilizada apenas no download.
  */
@@ -79,10 +128,6 @@ const downloadUrl =
     `https://res.cloudinary.com/${CONFIG.cloudName}` +
     `/image/upload/fl_attachment/${encodedPhotoId}`;
 
-
-/* =========================================================
-   CARREGAR PRÉ-VISUALIZAÇÃO
-   ========================================================= */
 
 /* =========================================================
    CARREGAR PRÉ-VISUALIZAÇÃO
@@ -101,19 +146,22 @@ photo.addEventListener("load", () => {
 photo.addEventListener("error", () => {
     if (loading) {
         loading.innerHTML = `
-            <p>Não foi possível carregar a pré-visualização.</p>
+            <p>
+                Não foi possível carregar a pré-visualização.
+            </p>
         `;
-    } else {
-        console.error(
-            "Não foi possível carregar a pré-visualização:",
-            imageUrl
-        );
     }
+
+    console.error(
+        "Não foi possível carregar a pré-visualização:",
+        imageUrl
+    );
 
     downloadButton.disabled = true;
 });
 
 photo.src = imageUrl;
+
 
 /* =========================================================
    VALIDAR EMAIL
@@ -124,21 +172,37 @@ function validarEmail(email) {
 }
 
 function obterEmail() {
-    return emailInput.value.trim().toLowerCase();
+    return emailInput
+        .value
+        .trim()
+        .toLowerCase();
+}
+
+
+/* =========================================================
+   ATUALIZAR ESTADO DO BOTÃO
+   ========================================================= */
+
+function atualizarBotaoDownload() {
+    const emailValido =
+        validarEmail(obterEmail());
+
+    downloadButton.disabled =
+        downloadEmCurso ||
+        !agree.checked ||
+        !emailValido;
 }
 
 emailInput.addEventListener("input", () => {
     emailError.textContent = "";
+    atualizarBotaoDownload();
 });
-
-
-/* =========================================================
-   ATIVAR BOTÃO
-   ========================================================= */
 
 agree.addEventListener("change", () => {
-    downloadButton.disabled = !agree.checked;
+    atualizarBotaoDownload();
 });
+
+atualizarBotaoDownload();
 
 
 /* =========================================================
@@ -151,36 +215,59 @@ async function registarDownload(email) {
     }
 
     const payload = {
-        eventCode: "STARTUP-VOUCHER-INNOVATE",
-        eventName: "StartUP Voucher Innovate",
+        eventCode: CONFIG.eventCode,
+        eventName: CONFIG.eventName,
         email: email,
         photoId: photoId,
-        imageConsent: imageConsent.checked,
-        emailConsent: emailConsent.checked,
-        downloadedAt: new Date().toISOString(),
-        pageUrl: window.location.href,
-        userAgent: navigator.userAgent
+
+        imageConsent:
+            Boolean(imageConsent?.checked),
+
+        emailConsent:
+            Boolean(emailConsent?.checked),
+
+        downloadedAt:
+            new Date().toISOString(),
+
+        pageUrl:
+            window.location.href,
+
+        userAgent:
+            navigator.userAgent
     };
 
     try {
-        const response = await fetch(CONFIG.workerUrl, {
-            method: "POST",
+        const response =
+            await fetch(
+                CONFIG.workerUrl,
+                {
+                    method: "POST",
 
-            headers: {
-                "Content-Type": "application/json"
-            },
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
 
-            body: JSON.stringify(payload)
-        });
+                    body:
+                        JSON.stringify(payload)
+                }
+            );
 
         if (!response.ok) {
+            const responseText =
+                await response.text();
+
             throw new Error(
-                `O Worker respondeu com o código ${response.status}`
+                `Worker ${response.status}: ${responseText}`
             );
         }
 
         return await response.json();
     } catch (error) {
+        /*
+         * Um erro de registo nunca deve impedir
+         * o cliente de receber a fotografia.
+         */
         console.error(
             "Não foi possível registar o download:",
             error
@@ -196,7 +283,8 @@ async function registarDownload(email) {
    ========================================================= */
 
 async function descarregarComBlob() {
-    const response = await fetch(downloadUrl);
+    const response =
+        await fetch(downloadUrl);
 
     if (!response.ok) {
         throw new Error(
@@ -204,16 +292,38 @@ async function descarregarComBlob() {
         );
     }
 
-    const blob = await response.blob();
-    const temporaryUrl = URL.createObjectURL(blob);
+    const blob =
+        await response.blob();
 
-    const link = document.createElement("a");
+    if (!blob.size) {
+        throw new Error(
+            "O ficheiro descarregado está vazio."
+        );
+    }
 
-    link.href = temporaryUrl;
+    const temporaryUrl =
+        URL.createObjectURL(blob);
+
+    const link =
+        document.createElement("a");
+
+    const filenameId =
+        photoId
+            .split("/")
+            .pop()
+            .replace(
+                /[^a-zA-Z0-9_-]/g,
+                ""
+            );
+
+    link.href =
+        temporaryUrl;
+
     link.download =
-        `fotografia-${photoId.split("/").pop()}.jpg`;
+        `fotografia-${filenameId}.jpg`;
 
     document.body.appendChild(link);
+
     link.click();
     link.remove();
 
@@ -228,13 +338,20 @@ async function descarregarComBlob() {
    ========================================================= */
 
 function descarregarDiretamente() {
-    const link = document.createElement("a");
+    const link =
+        document.createElement("a");
 
-    link.href = downloadUrl;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
+    link.href =
+        downloadUrl;
+
+    link.target =
+        "_blank";
+
+    link.rel =
+        "noopener noreferrer";
 
     document.body.appendChild(link);
+
     link.click();
     link.remove();
 }
@@ -244,58 +361,99 @@ function descarregarDiretamente() {
    PROCESSAR DOWNLOAD
    ========================================================= */
 
-downloadButton.addEventListener("click", async () => {
-    const email = obterEmail();
+downloadButton.addEventListener(
+    "click",
+    async () => {
+        if (downloadEmCurso) {
+            return;
+        }
 
-    emailError.textContent = "";
-    statusMessage.textContent = "";
+        const email =
+            obterEmail();
 
-    if (!email) {
-        emailError.textContent =
-            "Introduza o seu endereço de email.";
+        emailError.textContent = "";
+        statusMessage.textContent = "";
 
-        emailInput.focus();
-        return;
-    }
+        if (!email) {
+            emailError.textContent =
+                "Introduza o seu endereço de email.";
 
-    if (!validarEmail(email)) {
-        emailError.textContent =
-            "Introduza um endereço de email válido.";
+            emailInput.focus();
+            return;
+        }
 
-        emailInput.focus();
-        return;
-    }
+        if (!validarEmail(email)) {
+            emailError.textContent =
+                "Introduza um endereço de email válido.";
 
-    if (!agree.checked) {
+            emailInput.focus();
+            return;
+        }
+
+        if (!agree.checked) {
+            statusMessage.textContent =
+                "Confirme que leu a informação apresentada.";
+
+            return;
+        }
+
+        downloadEmCurso = true;
+        atualizarBotaoDownload();
+
+        downloadButton.textContent =
+            "A preparar o download...";
+
+        let downloadIniciado = false;
+
+        try {
+            await descarregarComBlob();
+            downloadIniciado = true;
+        } catch (error) {
+            console.warn(
+                "Download por Blob indisponível. " +
+                "A utilizar ligação direta.",
+                error
+            );
+
+            try {
+                descarregarDiretamente();
+                downloadIniciado = true;
+            } catch (fallbackError) {
+                console.error(
+                    "O download alternativo também falhou:",
+                    fallbackError
+                );
+            }
+        }
+
+        if (!downloadIniciado) {
+            statusMessage.textContent =
+                "Não foi possível iniciar o download.";
+
+            downloadEmCurso = false;
+
+            downloadButton.textContent =
+                "Descarregar fotografia";
+
+            atualizarBotaoDownload();
+            return;
+        }
+
         statusMessage.textContent =
-            "Confirme que leu a informação apresentada.";
+            "Download iniciado com sucesso.";
 
-        return;
-    }
+        /*
+         * O registo é tentado depois de o download começar.
+         * Mesmo que falhe, a fotografia já foi entregue.
+         */
+        const resultado =
+            await registarDownload(email);
 
-    downloadButton.disabled = true;
-    downloadButton.textContent =
-        "A preparar o download...";
+        const downloadId =
+            resultado?.downloadId || "";
 
-    try {
-        await descarregarComBlob();
-    } catch (error) {
-        console.warn(
-            "Download por Blob indisponível. A utilizar ligação direta.",
-            error
-        );
-
-        descarregarDiretamente();
-    }
-
-    statusMessage.textContent =
-        "Download iniciado com sucesso.";
-
-    const resultado = await registarDownload(email);
-    const downloadId = resultado?.downloadId || "";
-
-    setTimeout(() => {
-        const parametros = new URLSearchParams();
+        const parametros =
+            new URLSearchParams();
 
         parametros.set(
             "instagram",
@@ -309,7 +467,9 @@ downloadButton.addEventListener("click", async () => {
             );
         }
 
-        window.location.href =
-            `success.html?${parametros.toString()}`;
-    }, 1400);
-});
+        setTimeout(() => {
+            window.location.href =
+                `success.html?${parametros.toString()}`;
+        }, 1200);
+    }
+);
