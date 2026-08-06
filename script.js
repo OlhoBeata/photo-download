@@ -85,21 +85,36 @@ const downloadUrl =
    CARREGAR PRÉ-VISUALIZAÇÃO
    ========================================================= */
 
+/* =========================================================
+   CARREGAR PRÉ-VISUALIZAÇÃO
+   ========================================================= */
+
 photo.addEventListener("load", () => {
-    loading.style.display = "none";
-    previewWrapper.classList.add("visible");
+    if (loading) {
+        loading.style.display = "none";
+    }
+
+    if (previewWrapper) {
+        previewWrapper.classList.add("visible");
+    }
 });
 
 photo.addEventListener("error", () => {
-    loading.innerHTML = `
-        <p>Não foi possível carregar a pré-visualização.</p>
-    `;
+    if (loading) {
+        loading.innerHTML = `
+            <p>Não foi possível carregar a pré-visualização.</p>
+        `;
+    } else {
+        console.error(
+            "Não foi possível carregar a pré-visualização:",
+            imageUrl
+        );
+    }
 
     downloadButton.disabled = true;
 });
 
 photo.src = imageUrl;
-
 
 /* =========================================================
    VALIDAR EMAIL
