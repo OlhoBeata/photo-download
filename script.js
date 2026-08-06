@@ -470,8 +470,11 @@ downloadButton.addEventListener(
         }
 
         setTimeout(() => {
-            window.location.href =
-                `success.html?${parametros.toString()}`;
-        }, 1200);
+    statusMessage.textContent =
+        "Download concluído. Obrigado pela sua participação.";
+
+    downloadButton.textContent =
+        "Fotografia descarregada";
+}, 1200);
     }
 );
