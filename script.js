@@ -63,6 +63,9 @@ const statusMessage =
 
 let downloadEmCurso = false;
 
+const instagramButton =
+    document.getElementById("instagramButton");
+
 
 /* =========================================================
    VALIDAR ELEMENTOS ESSENCIAIS
@@ -458,10 +461,18 @@ downloadButton.addEventListener(
 
         setTimeout(() => {
     statusMessage.textContent =
+    "Download iniciado com sucesso.";
+
+await registarDownload(email);
+
+setTimeout(() => {
+    statusMessage.textContent =
         "Download concluído. Obrigado pela sua participação.";
 
     downloadButton.textContent =
         "Fotografia descarregada";
-}, 1200);
+
+    if (instagramButton) {
+        instagramButton.hidden = false;
     }
-);
+}, 1200);
