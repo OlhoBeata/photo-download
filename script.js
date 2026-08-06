@@ -66,6 +66,9 @@ let downloadEmCurso = false;
 const instagramButton =
     document.getElementById("instagramButton");
 
+const openPhotoButton =
+    document.getElementById("openPhotoButton");
+
 
 /* =========================================================
    VALIDAR ELEMENTOS ESSENCIAIS
