@@ -116,7 +116,6 @@ input {
     max-width: 150px;
     height: auto;
     margin: 0;
-    filter: blur(4px);
     transform: scale(1.08);
     pointer-events: none;
     user-select: none;
