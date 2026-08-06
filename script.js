@@ -386,11 +386,17 @@ downloadButton.addEventListener(
         await registarDownload(email);
 
         setTimeout(() => {
-            statusMessage.textContent =
-                "Download concluído. Obrigado pela sua participação.";
+    statusMessage.textContent =
+        "Download concluído. A fotografia foi guardada nas transferências do seu dispositivo.";
 
-            downloadButton.textContent =
-                "Fotografia descarregada";
-        }, 1200);
+    downloadButton.textContent =
+        "Fotografia descarregada";
+
+    if (openPhotoButton) {
+        openPhotoButton.href =
+            `https://res.cloudinary.com/${CONFIG.cloudName}` +
+            `/image/upload/f_auto,q_auto/${encodedPhotoId}`;
+
+        openPhotoButton.hidden = false;
     }
-);
+}, 1200);
