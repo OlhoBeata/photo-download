@@ -138,6 +138,8 @@ photo.addEventListener("load", () => {
         loading.style.display = "none";
     }
 
+    photo.classList.add("visible");
+
     if (previewWrapper) {
         previewWrapper.classList.add("visible");
     }
