@@ -461,3 +461,25 @@ body {
 .instagram-button:hover {
     background: #f2f2f2;
 }
+.open-photo-button {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    padding: 16px 24px;
+    border: 1px solid #111111;
+    border-radius: 4px;
+    background: #ffffff;
+    color: #111111;
+    font-size: 15px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+}
+
+.open-photo-button:hover {
+    background: #f2f2f2;
+}
+
+.open-photo-button[hidden] {
+    display: none;
+}
