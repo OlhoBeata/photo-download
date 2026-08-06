@@ -451,16 +451,7 @@ downloadButton.addEventListener(
          * O registo é tentado depois de o download começar.
          * Mesmo que falhe, a fotografia já foi entregue.
          */
-        const resultado =
-            await registarDownload(email);
-
-        const downloadId =
-            resultado?.downloadId || "";
-
-        
-
-        setTimeout(() => {
-    statusMessage.textContent =
+        statusMessage.textContent =
     "Download iniciado com sucesso.";
 
 await registarDownload(email);
@@ -471,8 +462,4 @@ setTimeout(() => {
 
     downloadButton.textContent =
         "Fotografia descarregada";
-
-    if (instagramButton) {
-        instagramButton.hidden = false;
-    }
 }, 1200);
