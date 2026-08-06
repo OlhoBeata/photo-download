@@ -377,89 +377,17 @@ downloadButton.addEventListener(
             obterEmail();
 
         emailError.textContent = "";
-        statusMessage.textContent = "";
-
-        if (!email) {
-            emailError.textContent =
-                "Introduza o seu endereço de email.";
-
-            emailInput.focus();
-            return;
-        }
-
-        if (!validarEmail(email)) {
-            emailError.textContent =
-                "Introduza um endereço de email válido.";
-
-            emailInput.focus();
-            return;
-        }
-
-        if (!agree.checked) {
-            statusMessage.textContent =
-                "Confirme que leu a informação apresentada.";
-
-            return;
-        }
-
-        downloadEmCurso = true;
-        atualizarBotaoDownload();
-
-        downloadButton.textContent =
-            "A preparar o download...";
-
-        let downloadIniciado = false;
-
-        try {
-            await descarregarComBlob();
-            downloadIniciado = true;
-        } catch (error) {
-            console.warn(
-                "Download por Blob indisponível. " +
-                "A utilizar ligação direta.",
-                error
-            );
-
-            try {
-                descarregarDiretamente();
-                downloadIniciado = true;
-            } catch (fallbackError) {
-                console.error(
-                    "O download alternativo também falhou:",
-                    fallbackError
-                );
-            }
-        }
-
-        if (!downloadIniciado) {
-            statusMessage.textContent =
-                "Não foi possível iniciar o download.";
-
-            downloadEmCurso = false;
-
-            downloadButton.textContent =
-                "Descarregar fotografia";
-
-            atualizarBotaoDownload();
-            return;
-        }
-
-        statusMessage.textContent =
+               statusMessage.textContent =
             "Download iniciado com sucesso.";
 
-        /*
-         * O registo é tentado depois de o download começar.
-         * Mesmo que falhe, a fotografia já foi entregue.
-         */
-        statusMessage.textContent =
-    "Download iniciado com sucesso.";
+        await registarDownload(email);
 
-await registarDownload(email);
+        setTimeout(() => {
+            statusMessage.textContent =
+                "Download concluído. Obrigado pela sua participação.";
 
-setTimeout(() => {
-    statusMessage.textContent =
-        "Download concluído. Obrigado pela sua participação.";
-
-    downloadButton.textContent =
-        "Fotografia descarregada";
-}, 1200);
+            downloadButton.textContent =
+                "Fotografia descarregada";
+        }, 1200);
+    }
+);
