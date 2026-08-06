@@ -71,8 +71,7 @@ const encodedPhotoId = photoId
  */
 const imageUrl =
     `https://res.cloudinary.com/${CONFIG.cloudName}` +
-    `/image/upload/c_limit,w_150,q_25,f_auto/${encodedPhotoId}`;
-
+    `/image/upload/c_fill,w_220,q_40,f_auto/${encodedPhotoId}`;
 /*
  * A fotografia original é utilizada apenas no download.
  */
