@@ -454,20 +454,7 @@ downloadButton.addEventListener(
         const downloadId =
             resultado?.downloadId || "";
 
-        const parametros =
-            new URLSearchParams();
-
-        parametros.set(
-            "instagram",
-            CONFIG.instagramUrl
-        );
-
-        if (downloadId) {
-            parametros.set(
-                "downloadId",
-                downloadId
-            );
-        }
+        
 
         setTimeout(() => {
     statusMessage.textContent =
