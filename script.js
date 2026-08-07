@@ -63,8 +63,6 @@ const statusMessage =
 
 let downloadEmCurso = false;
 
-const instagramButton =
-    document.getElementById("instagramButton");
 
 const openPhotoButton =
     document.getElementById("openPhotoButton");
@@ -386,17 +384,22 @@ downloadButton.addEventListener(
         await registarDownload(email);
 
         setTimeout(() => {
-    statusMessage.textContent =
-        "Download concluído. A fotografia foi guardada nas transferências do seu dispositivo.";
+            statusMessage.textContent =
+            "Download iniciado com sucesso.";
 
-    downloadButton.textContent =
-        "Fotografia descarregada";
+        /*
+         * Registar o download na base D1.
+         * Se o registo falhar, não interfere
+         * com a fotografia já descarregada.
+         */
+        await registarDownload(email);
 
-    if (openPhotoButton) {
-        openPhotoButton.href =
-            `https://res.cloudinary.com/${CONFIG.cloudName}` +
-            `/image/upload/f_auto,q_auto/${encodedPhotoId}`;
+        setTimeout(() => {
+            statusMessage.textContent =
+                "Download concluído. Obrigado pela sua participação.";
 
-        openPhotoButton.hidden = false;
+            downloadButton.textContent =
+                "Fotografia descarregada";
+        }, 1200);
     }
-}, 1200);
+);
