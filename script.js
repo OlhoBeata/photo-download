@@ -10,9 +10,6 @@ const CONFIG = {
     eventCode: "STARTUP-VOUCHER-INNOVATE",
     eventName: "StartUP Voucher Innovate",
 
-    instagramUrl:
-        "https://www.instagram.com/by.iapmei/",
-
     workerUrl:
         "https://weathered-bonus-4ffaolhodabeata-api-v3.luis-santos-286.workers.dev/downloads"
 };
@@ -22,69 +19,25 @@ const CONFIG = {
    ELEMENTOS
    ========================================================= */
 
-const params =
-    new URLSearchParams(window.location.search);
+const params = new URLSearchParams(window.location.search);
+const photoId = params.get("photo");
 
-const photoId =
-    params.get("photo");
+const container = document.querySelector(".container");
+const photo = document.getElementById("photo");
+const loading = document.getElementById("loading");
+const previewWrapper = document.getElementById("previewWrapper");
 
-const container =
-    document.querySelector(".container");
+const emailInput = document.getElementById("customerEmail");
+const emailError = document.getElementById("emailError");
 
-const photo =
-    document.getElementById("photo");
+const imageConsent = document.getElementById("imageConsent");
+const emailConsent = document.getElementById("emailConsent");
+const agree = document.getElementById("agree");
 
-const loading =
-    document.getElementById("loading");
-
-const previewWrapper =
-    document.getElementById("previewWrapper");
-
-const emailInput =
-    document.getElementById("customerEmail");
-
-const emailError =
-    document.getElementById("emailError");
-
-const imageConsent =
-    document.getElementById("imageConsent");
-
-const emailConsent =
-    document.getElementById("emailConsent");
-
-const agree =
-    document.getElementById("agree");
-
-const downloadButton =
-    document.getElementById("download");
-
-const statusMessage =
-    document.getElementById("statusMessage");
+const downloadButton = document.getElementById("download");
+const statusMessage = document.getElementById("statusMessage");
 
 let downloadEmCurso = false;
-
-
-const openPhotoButton =
-    document.getElementById("openPhotoButton");
-
-
-/* =========================================================
-   VALIDAR ELEMENTOS ESSENCIAIS
-   ========================================================= */
-
-if (
-    !container ||
-    !photo ||
-    !emailInput ||
-    !emailError ||
-    !agree ||
-    !downloadButton ||
-    !statusMessage
-) {
-    throw new Error(
-        "A página de download não contém todos os elementos necessários."
-    );
-}
 
 
 /* =========================================================
@@ -102,14 +55,12 @@ if (!photoId) {
         </header>
     `;
 
-    throw new Error(
-        "Falta o parâmetro photo no endereço."
-    );
+    throw new Error("Falta o parâmetro photo no endereço.");
 }
 
 
 /* =========================================================
-   ENDEREÇOS CLOUDINARY
+   CLOUDINARY
    ========================================================= */
 
 const encodedPhotoId = photoId
@@ -117,16 +68,17 @@ const encodedPhotoId = photoId
     .map(part => encodeURIComponent(part))
     .join("/");
 
+
 /*
- * Pré-visualização pequena e com qualidade reduzida.
- * A marca de água é aplicada visualmente pelo HTML/CSS.
+ * Imagem pequena para pré-visualização.
  */
 const imageUrl =
     `https://res.cloudinary.com/${CONFIG.cloudName}` +
     `/image/upload/c_limit,w_220,q_45,f_auto/${encodedPhotoId}`;
 
+
 /*
- * A fotografia original é utilizada apenas no download.
+ * Fotografia original para download.
  */
 const downloadUrl =
     `https://res.cloudinary.com/${CONFIG.cloudName}` +
@@ -134,10 +86,11 @@ const downloadUrl =
 
 
 /* =========================================================
-   CARREGAR PRÉ-VISUALIZAÇÃO
+   PRÉ-VISUALIZAÇÃO
    ========================================================= */
 
 photo.addEventListener("load", () => {
+
     if (loading) {
         loading.style.display = "none";
     }
@@ -149,33 +102,32 @@ photo.addEventListener("load", () => {
     }
 });
 
+
 photo.addEventListener("error", () => {
+
     if (loading) {
-        loading.innerHTML = `
-            <p>
-                Não foi possível carregar a pré-visualização.
-            </p>
-        `;
+        loading.innerHTML =
+            "<p>Não foi possível carregar a pré-visualização.</p>";
     }
 
     console.error(
-        "Não foi possível carregar a pré-visualização:",
+        "Erro ao carregar pré-visualização:",
         imageUrl
     );
-
-    downloadButton.disabled = true;
 });
+
 
 photo.src = imageUrl;
 
 
 /* =========================================================
-   VALIDAR EMAIL
+   EMAIL
    ========================================================= */
 
 function validarEmail(email) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
+
 
 function obterEmail() {
     return emailInput
@@ -186,45 +138,57 @@ function obterEmail() {
 
 
 /* =========================================================
-   ATUALIZAR ESTADO DO BOTÃO
+   BOTÃO
    ========================================================= */
 
 function atualizarBotaoDownload() {
+
     const emailValido =
         validarEmail(obterEmail());
 
     downloadButton.disabled =
         downloadEmCurso ||
-        !agree.checked ||
-        !emailValido;
+        !emailValido ||
+        !agree.checked;
 }
 
+
 emailInput.addEventListener("input", () => {
+
     emailError.textContent = "";
+
     atualizarBotaoDownload();
 });
 
+
 agree.addEventListener("change", () => {
+
     atualizarBotaoDownload();
 });
+
 
 atualizarBotaoDownload();
 
 
 /* =========================================================
-   REGISTAR DOWNLOAD
+   REGISTAR DOWNLOAD NA D1
    ========================================================= */
 
 async function registarDownload(email) {
-    if (!CONFIG.workerUrl) {
-        return null;
-    }
 
     const payload = {
-        eventCode: CONFIG.eventCode,
-        eventName: CONFIG.eventName,
-        email: email,
-        photoId: photoId,
+
+        eventCode:
+            CONFIG.eventCode,
+
+        eventName:
+            CONFIG.eventName,
+
+        email:
+            email,
+
+        photoId:
+            photoId,
 
         imageConsent:
             Boolean(imageConsent?.checked),
@@ -242,7 +206,9 @@ async function registarDownload(email) {
             navigator.userAgent
     };
 
+
     try {
+
         const response =
             await fetch(
                 CONFIG.workerUrl,
@@ -255,27 +221,30 @@ async function registarDownload(email) {
                     },
 
                     body:
-                        JSON.stringify(payload)
+                        JSON.stringify(payload),
+
+                    keepalive: true
                 }
             );
 
-        if (!response.ok) {
-            const responseText =
-                await response.text();
 
-            throw new Error(
-                `Worker ${response.status}: ${responseText}`
+        if (!response.ok) {
+
+            console.error(
+                "Worker respondeu:",
+                response.status
             );
+
+            return null;
         }
 
+
         return await response.json();
+
     } catch (error) {
-        /*
-         * Um erro de registo nunca deve impedir
-         * o cliente de receber a fotografia.
-         */
+
         console.error(
-            "Não foi possível registar o download:",
+            "Erro ao registar download:",
             error
         );
 
@@ -285,80 +254,28 @@ async function registarDownload(email) {
 
 
 /* =========================================================
-   DOWNLOAD ATRAVÉS DE BLOB
+   DOWNLOAD
    ========================================================= */
 
-async function descarregarComBlob() {
-    const response =
-        await fetch(downloadUrl);
+function iniciarDownload() {
 
-    if (!response.ok) {
-        throw new Error(
-            `Erro ao obter a fotografia: ${response.status}`
-        );
-    }
-
-    const blob =
-        await response.blob();
-
-    if (!blob.size) {
-        throw new Error(
-            "O ficheiro descarregado está vazio."
-        );
-    }
-
-    const temporaryUrl =
-        URL.createObjectURL(blob);
-
-    const link =
-        document.createElement("a");
-
-    const filenameId =
-        photoId
-            .split("/")
-            .pop()
-            .replace(
-                /[^a-zA-Z0-9_-]/g,
-                ""
-            );
-
-    link.href =
-        temporaryUrl;
-
-    link.download =
-        `fotografia-${filenameId}.jpg`;
-
-    document.body.appendChild(link);
-
-    link.click();
-    link.remove();
-
-    setTimeout(() => {
-        URL.revokeObjectURL(temporaryUrl);
-    }, 5000);
-}
-
-
-/* =========================================================
-   DOWNLOAD ALTERNATIVO
-   ========================================================= */
-
-function descarregarDiretamente() {
     const link =
         document.createElement("a");
 
     link.href =
         downloadUrl;
 
-    link.target =
-        "_blank";
-
+    /*
+     * Não usamos target="_blank".
+     * Nos telemóveis isso pode ser bloqueado.
+     */
     link.rel =
-        "noopener noreferrer";
+        "noopener";
 
     document.body.appendChild(link);
 
     link.click();
+
     link.remove();
 }
 
@@ -369,37 +286,93 @@ function descarregarDiretamente() {
 
 downloadButton.addEventListener(
     "click",
-    async () => {
+    () => {
+
         if (downloadEmCurso) {
             return;
         }
 
+
         const email =
             obterEmail();
 
+
         emailError.textContent = "";
-               statusMessage.textContent =
-            "Download iniciado com sucesso.";
+        statusMessage.textContent = "";
 
-        await registarDownload(email);
 
-        setTimeout(() => {
+        if (!email) {
+
+            emailError.textContent =
+                "Introduza o seu endereço de email.";
+
+            emailInput.focus();
+
+            return;
+        }
+
+
+        if (!validarEmail(email)) {
+
+            emailError.textContent =
+                "Introduza um endereço de email válido.";
+
+            emailInput.focus();
+
+            return;
+        }
+
+
+        if (!agree.checked) {
+
             statusMessage.textContent =
-            "Download iniciado com sucesso.";
+                "Confirme que leu a informação apresentada.";
+
+            return;
+        }
+
 
         /*
-         * Registar o download na base D1.
-         * Se o registo falhar, não interfere
-         * com a fotografia já descarregada.
+         * Impedir duplo clique.
          */
-        await registarDownload(email);
+        downloadEmCurso = true;
+
+        atualizarBotaoDownload();
+
+
+        downloadButton.textContent =
+            "A iniciar download...";
+
+
+        /*
+         * IMPORTANTE:
+         * o download é iniciado imediatamente durante
+         * o clique do utilizador.
+         *
+         * Isto é mais fiável em iPhone e Android.
+         */
+        iniciarDownload();
+
+
+        statusMessage.textContent =
+            "Download iniciado. A fotografia será guardada nas transferências do seu dispositivo.";
+
+
+        /*
+         * O registo na D1 acontece separadamente.
+         * Não bloqueia o download.
+         */
+        registarDownload(email);
+
 
         setTimeout(() => {
-            statusMessage.textContent =
-                "Download concluído. Obrigado pela sua participação.";
 
             downloadButton.textContent =
                 "Fotografia descarregada";
-        }, 1200);
+
+            statusMessage.textContent =
+                "Download concluído. Obrigado pela sua participação.";
+
+        }, 1500);
     }
 );
